@@ -5564,7 +5564,7 @@ const CONSTANTS = {
     ASSETS: {},
     CONTRACT_OVERRIDES: {}
 };
-const TRUSTED_TOKEN_CONTRACTS = [];
+const TRUSTED_TOKEN_CONTRACTS = ['KT1NPHV5h1fPPX9b28RRD1F93qWqKgtjbHzg'];
 
 
 /***/ }),
