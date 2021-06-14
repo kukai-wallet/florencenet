@@ -8956,7 +8956,10 @@
       };
       var CONSTANTS = {
         NAME: 'Testnet / Florencenet',
-        TEZOS_DOMAIN_CONTRACT: 'KT1KQkkVMTRhGUfJYbHBoaeJ6NUJi8o58cvg',
+        TEZOS_DOMAIN: {
+          CONTRACT: 'KT1KQkkVMTRhGUfJYbHBoaeJ6NUJi8o58cvg',
+          TOP_DOMAIN: 'flo'
+        },
         NETWORK: 'florencenet',
         MAINNET: false,
         NODE_URL: 'https://api.tez.ie/rpc/florencenet',
@@ -15106,8 +15109,7 @@
               _iterator15.f();
             }
 
-            var topDomain = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["CONSTANTS"].MAINNET ? '.tez' : '.edo';
-            return a.length >= 2 && domain.endsWith(topDomain);
+            return a.length >= 2 && domain.endsWith(".".concat(_environments_environment__WEBPACK_IMPORTED_MODULE_3__["CONSTANTS"].TEZOS_DOMAIN.TOP_DOMAIN));
           }
         }, {
           key: "twitterAccount",
@@ -27009,7 +27011,7 @@
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee91() {
               var _this75 = this;
 
-              var hasCamera;
+              var hasCamera, qrScanner;
               return regeneratorRuntime.wrap(function _callee91$(_context92) {
                 while (1) {
                   switch (_context92.prev = _context92.next) {
@@ -27021,25 +27023,33 @@
                       hasCamera = _context92.sent;
 
                       if (!hasCamera) {
-                        _context92.next = 10;
+                        _context92.next = 12;
                         break;
                       }
 
                       qr_scanner__WEBPACK_IMPORTED_MODULE_3__["default"].WORKER_PATH = './assets/js/qr-scanner-worker.min.js';
-                      this.qrScanner = new qr_scanner__WEBPACK_IMPORTED_MODULE_3__["default"](this.videoplayer.nativeElement, function (result) {
+                      qrScanner = this.qrScanner = new qr_scanner__WEBPACK_IMPORTED_MODULE_3__["default"](this.videoplayer.nativeElement, function (result) {
                         return _this75.handleQrCode(result);
                       });
                       _context92.next = 8;
                       return this.qrScanner.start();
 
                     case 8:
-                      _context92.next = 11;
+                      console.log('started');
+                      setTimeout(function () {
+                        if (!_this75.modalOpen) {
+                          console.log('destroy');
+                          qrScanner.stop();
+                          qrScanner.destroy();
+                        }
+                      });
+                      _context92.next = 13;
                       break;
 
-                    case 10:
+                    case 12:
                       console.warn('no camera found');
 
-                    case 11:
+                    case 13:
                     case "end":
                       return _context92.stop();
                   }
@@ -27082,6 +27092,7 @@
             // restore body scrollbar
             if (this.qrScanner) {
               this.qrScanner.stop();
+              this.qrScanner.destroy();
             }
 
             document.body.style.marginRight = '';
@@ -33844,7 +33855,7 @@
                   switch (_context144.prev = _context144.next) {
                     case 0:
                       if (signature) {
-                        _context144.next = 5;
+                        _context144.next = 6;
                         break;
                       }
 
@@ -33852,18 +33863,27 @@
                       return this.beaconService.rejectOnUserAbort(this.signRequest);
 
                     case 3:
-                      _context144.next = 7;
+                      this.beaconService.responseSync();
+                      _context144.next = 10;
                       break;
 
-                    case 5:
-                      _context144.next = 7;
+                    case 6:
+                      if (!(signature !== 'silent')) {
+                        _context144.next = 10;
+                        break;
+                      }
+
+                      _context144.next = 9;
                       return this.beaconService.approveSignPayloadRequest(this.signRequest, signature);
 
-                    case 7:
+                    case 9:
+                      this.beaconService.responseSync();
+
+                    case 10:
                       console.log(signature);
                       this.signRequest = null;
 
-                    case 9:
+                    case 12:
                     case "end":
                       return _context144.stop();
                   }
@@ -33880,61 +33900,57 @@
                 while (1) {
                   switch (_context145.prev = _context145.next) {
                     case 0:
-                      if (ev.key.startsWith('beacon') && ev.key !== 'beacon:sdk-matrix-preserved-state') {
-                        console.log(ev.key, ev.newValue);
-                      }
-
                       _context145.t0 = ev.key;
-                      _context145.next = _context145.t0 === 'beacon:communication-peers-wallet' ? 4 : _context145.t0 === 'beacon:request-response' ? 19 : 21;
+                      _context145.next = _context145.t0 === 'beacon:communication-peers-wallet' ? 3 : _context145.t0 === 'beacon:request-response' ? 18 : 20;
                       break;
 
-                    case 4:
+                    case 3:
                       peers = JSON.parse(ev.newValue);
-                      _context145.next = 7;
+                      _context145.next = 6;
                       return this.beaconService.client.getAppMetadataList();
 
-                    case 7:
+                    case 6:
                       senderIds = _context145.sent.map(function (app) {
                         return app.senderId;
                       });
                       newPeers = peers.length - senderIds.length;
 
                       if (!(newPeers > 0)) {
-                        _context145.next = 17;
+                        _context145.next = 16;
                         break;
                       }
 
                       newPeer = peers ? peers.pop() : null;
 
                       if (!(newPeer && !senderIds.includes(newPeer.senderId))) {
-                        _context145.next = 15;
+                        _context145.next = 14;
                         break;
                       }
 
                       senderId = newPeer.senderId, peer = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__rest"])(newPeer, ["senderId"]);
-                      _context145.next = 15;
+                      _context145.next = 14;
                       return this.beaconService.addPeer(JSON.stringify(peer), false);
 
-                    case 15:
-                      _context145.next = 18;
+                    case 14:
+                      _context145.next = 17;
                       break;
 
-                    case 17:
+                    case 16:
                       this.beaconService.syncBeaconState();
 
-                    case 18:
-                      return _context145.abrupt("break", 21);
+                    case 17:
+                      return _context145.abrupt("break", 20);
 
-                    case 19:
+                    case 18:
                       if (ev.newValue) {
                         this.messageService.beaconResponse.next(true);
                         this.beaconService.syncBeaconState();
                         this.changeFavicon();
                       }
 
-                      return _context145.abrupt("break", 21);
+                      return _context145.abrupt("break", 20);
 
-                    case 21:
+                    case 20:
                     case "end":
                       return _context145.stop();
                   }

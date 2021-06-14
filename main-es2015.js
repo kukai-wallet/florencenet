@@ -5717,7 +5717,10 @@ const environment = {
 };
 const CONSTANTS = {
     NAME: 'Testnet / Florencenet',
-    TEZOS_DOMAIN_CONTRACT: 'KT1KQkkVMTRhGUfJYbHBoaeJ6NUJi8o58cvg',
+    TEZOS_DOMAIN: {
+        CONTRACT: 'KT1KQkkVMTRhGUfJYbHBoaeJ6NUJi8o58cvg',
+        TOP_DOMAIN: 'flo'
+    },
     NETWORK: 'florencenet',
     MAINNET: false,
     NODE_URL: 'https://api.tez.ie/rpc/florencenet',
@@ -8936,8 +8939,7 @@ class InputValidationService {
                 return false;
             }
         }
-        const topDomain = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["CONSTANTS"].MAINNET ? '.tez' : '.edo';
-        return (a.length >= 2 && domain.endsWith(topDomain));
+        return (a.length >= 2 && domain.endsWith(`.${_environments_environment__WEBPACK_IMPORTED_MODULE_3__["CONSTANTS"].TEZOS_DOMAIN.TOP_DOMAIN}`));
     }
     twitterAccount(username) {
         // The only characters you can use are uppercase and lowercase letters, numbers, and the underscore character ( _ ).
@@ -15280,8 +15282,16 @@ class QrScannerComponent {
             const hasCamera = yield qr_scanner__WEBPACK_IMPORTED_MODULE_3__["default"].hasCamera();
             if (hasCamera) {
                 qr_scanner__WEBPACK_IMPORTED_MODULE_3__["default"].WORKER_PATH = './assets/js/qr-scanner-worker.min.js';
-                this.qrScanner = new qr_scanner__WEBPACK_IMPORTED_MODULE_3__["default"](this.videoplayer.nativeElement, result => this.handleQrCode(result));
+                const qrScanner = this.qrScanner = new qr_scanner__WEBPACK_IMPORTED_MODULE_3__["default"](this.videoplayer.nativeElement, result => this.handleQrCode(result));
                 yield this.qrScanner.start();
+                console.log('started');
+                setTimeout(() => {
+                    if (!this.modalOpen) {
+                        console.log('destroy');
+                        qrScanner.stop();
+                        qrScanner.destroy();
+                    }
+                });
             }
             else {
                 console.warn('no camera found');
@@ -15314,6 +15324,7 @@ class QrScannerComponent {
         // restore body scrollbar
         if (this.qrScanner) {
             this.qrScanner.stop();
+            this.qrScanner.destroy();
         }
         document.body.style.marginRight = '';
         document.body.style.overflow = '';
@@ -18390,9 +18401,11 @@ class UriHandlerComponent {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
             if (!signature) {
                 yield this.beaconService.rejectOnUserAbort(this.signRequest);
+                this.beaconService.responseSync();
             }
-            else {
+            else if (signature !== 'silent') {
                 yield this.beaconService.approveSignPayloadRequest(this.signRequest, signature);
+                this.beaconService.responseSync();
             }
             console.log(signature);
             this.signRequest = null;
@@ -18400,9 +18413,6 @@ class UriHandlerComponent {
     }
     handleStorageEvent(ev) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            if (ev.key.startsWith('beacon') && ev.key !== 'beacon:sdk-matrix-preserved-state') {
-                console.log(ev.key, ev.newValue);
-            }
             switch (ev.key) {
                 case 'beacon:communication-peers-wallet':
                     const peers = JSON.parse(ev.newValue);
