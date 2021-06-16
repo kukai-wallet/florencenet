@@ -3858,7 +3858,10 @@
               var sig = key.sign(hash, {
                 canonical: true
               });
-              sig = new Uint8Array(sig.r.toArray().concat(sig.s.toArray()));
+              var pad = new Array(32).fill(0);
+              var r = pad.concat(sig.r.toArray()).slice(-32);
+              var s = pad.concat(sig.s.toArray()).slice(-32);
+              sig = new Uint8Array(r.concat(s));
               var spsig = this.b58cencode(sig, this.prefix.spsig);
               var sbytes = bytes + this.buf2hex(sig);
               return {
@@ -26990,6 +26993,7 @@
           this.CONSTANTS = _environments_environment__WEBPACK_IMPORTED_MODULE_5__["CONSTANTS"];
           this.modalOpen = false;
           this.manualInput = '';
+          this.loadingCam = false;
         }
 
         _createClass(QrScannerComponent, [{
@@ -27011,15 +27015,16 @@
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee91() {
               var _this75 = this;
 
-              var hasCamera, qrScanner;
+              var hasCamera;
               return regeneratorRuntime.wrap(function _callee91$(_context92) {
                 while (1) {
                   switch (_context92.prev = _context92.next) {
                     case 0:
-                      _context92.next = 2;
+                      this.loadingCam = true;
+                      _context92.next = 3;
                       return qr_scanner__WEBPACK_IMPORTED_MODULE_3__["default"].hasCamera();
 
-                    case 2:
+                    case 3:
                       hasCamera = _context92.sent;
 
                       if (!hasCamera) {
@@ -27028,20 +27033,19 @@
                       }
 
                       qr_scanner__WEBPACK_IMPORTED_MODULE_3__["default"].WORKER_PATH = './assets/js/qr-scanner-worker.min.js';
-                      qrScanner = this.qrScanner = new qr_scanner__WEBPACK_IMPORTED_MODULE_3__["default"](this.videoplayer.nativeElement, function (result) {
+                      this.qrScanner = new qr_scanner__WEBPACK_IMPORTED_MODULE_3__["default"](this.videoplayer.nativeElement, function (result) {
                         return _this75.handleQrCode(result);
                       });
-                      _context92.next = 8;
+                      _context92.next = 9;
                       return this.qrScanner.start();
 
-                    case 8:
-                      console.log('started');
-                      setTimeout(function () {
-                        if (!_this75.modalOpen) {
-                          qrScanner.stop();
-                          qrScanner.destroy();
-                        }
-                      });
+                    case 9:
+                      if (!this.modalOpen) {
+                        this.qrScanner.stop();
+                        this.qrScanner.destroy();
+                        this.qrScanner = null;
+                      }
+
                       _context92.next = 13;
                       break;
 
@@ -27049,6 +27053,9 @@
                       console.warn('no camera found');
 
                     case 13:
+                      this.loadingCam = false;
+
+                    case 14:
                     case "end":
                       return _context92.stop();
                   }
@@ -27089,9 +27096,10 @@
           key: "closeModal",
           value: function closeModal() {
             // restore body scrollbar
-            if (this.qrScanner) {
+            if (this.qrScanner && !this.loadingCam) {
               this.qrScanner.stop();
               this.qrScanner.destroy();
+              this.qrScanner = null;
             }
 
             document.body.style.marginRight = '';
@@ -33265,7 +33273,6 @@
               active = false;
             }
 
-            console.log('favicon active', active);
             var src = active ? 'favicon-attention.ico' : 'favicon.ico';
             document.getElementById('favicon').setAttribute('href', src);
           }
@@ -33614,61 +33621,59 @@
                       message.payload = message.payload.toLowerCase();
                       hexString = message.payload;
                       console.log('hex', hexString);
-                      console.log(message.signingType !== 'raw');
-                      console.log(message.signingType !== 'micheline');
 
                       if (!(message.signingType !== 'raw' && message.signingType !== 'micheline' || !this.inputValidationService.hexString(hexString))) {
-                        _context141.next = 25;
+                        _context141.next = 23;
                         break;
                       }
 
                       console.warn('Invalid sign payload');
-                      _context141.next = 22;
+                      _context141.next = 20;
                       return this.beaconService.rejectOnUnknown(message);
 
-                    case 22:
+                    case 20:
                       return _context141.abrupt("return", false);
 
-                    case 25:
+                    case 23:
                       if (!(hexString.slice(0, 2) !== '05')) {
-                        _context141.next = 30;
+                        _context141.next = 28;
                         break;
                       }
 
                       console.warn('Unsupported prefix (expected 05)');
-                      _context141.next = 29;
+                      _context141.next = 27;
                       return this.beaconService.rejectOnUnknown(message);
 
-                    case 29:
+                    case 27:
                       return _context141.abrupt("return", false);
 
-                    case 30:
-                      _context141.prev = 30;
+                    case 28:
+                      _context141.prev = 28;
                       parsedPayload = Object(_taquito_local_forging_dist_lib_michelson_codec__WEBPACK_IMPORTED_MODULE_11__["valueDecoder"])(_taquito_local_forging_dist_lib_uint8array_consumer__WEBPACK_IMPORTED_MODULE_12__["Uint8ArrayConsumer"].fromHexString(hexString.slice(2)));
                       console.log('Parsed sign payload', parsedPayload);
-                      _context141.next = 41;
+                      _context141.next = 39;
                       break;
 
-                    case 35:
-                      _context141.prev = 35;
-                      _context141.t0 = _context141["catch"](30);
+                    case 33:
+                      _context141.prev = 33;
+                      _context141.t0 = _context141["catch"](28);
                       console.warn(_context141.t0.message ? 'Decoding: ' + _context141.t0.message : _context141.t0);
-                      _context141.next = 40;
+                      _context141.next = 38;
                       return this.beaconService.rejectOnUnknown(message);
 
-                    case 40:
+                    case 38:
                       return _context141.abrupt("return", false);
 
-                    case 41:
+                    case 39:
                       this.activeAccount = this.walletService.wallet.getImplicitAccount(message.sourceAddress);
                       return _context141.abrupt("return", true);
 
-                    case 43:
+                    case 41:
                     case "end":
                       return _context141.stop();
                   }
                 }
-              }, _callee140, this, [[30, 35]]);
+              }, _callee140, this, [[28, 33]]);
             }));
           }
         }, {

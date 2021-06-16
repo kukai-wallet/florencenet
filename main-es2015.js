@@ -2218,7 +2218,10 @@ class OperationService {
             bytes = bytes.slice(2);
             const key = (new elliptic__WEBPACK_IMPORTED_MODULE_14__["ec"]('secp256k1')).keyFromPrivate(new Uint8Array(this.b58cdecode(sk, this.prefix.spsk)));
             let sig = key.sign(hash, { canonical: true });
-            sig = new Uint8Array(sig.r.toArray().concat(sig.s.toArray()));
+            const pad = new Array(32).fill(0);
+            const r = pad.concat(sig.r.toArray()).slice(-32);
+            const s = pad.concat(sig.s.toArray()).slice(-32);
+            sig = new Uint8Array(r.concat(s));
             const spsig = this.b58cencode(sig, this.prefix.spsig);
             const sbytes = bytes + this.buf2hex(sig);
             return {
@@ -15266,6 +15269,7 @@ class QrScannerComponent {
         this.CONSTANTS = _environments_environment__WEBPACK_IMPORTED_MODULE_5__["CONSTANTS"];
         this.modalOpen = false;
         this.manualInput = '';
+        this.loadingCam = false;
     }
     ngOnInit() {
     }
@@ -15279,22 +15283,22 @@ class QrScannerComponent {
     }
     scan() {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            this.loadingCam = true;
             const hasCamera = yield qr_scanner__WEBPACK_IMPORTED_MODULE_3__["default"].hasCamera();
             if (hasCamera) {
                 qr_scanner__WEBPACK_IMPORTED_MODULE_3__["default"].WORKER_PATH = './assets/js/qr-scanner-worker.min.js';
-                const qrScanner = this.qrScanner = new qr_scanner__WEBPACK_IMPORTED_MODULE_3__["default"](this.videoplayer.nativeElement, result => this.handleQrCode(result));
+                this.qrScanner = new qr_scanner__WEBPACK_IMPORTED_MODULE_3__["default"](this.videoplayer.nativeElement, result => this.handleQrCode(result));
                 yield this.qrScanner.start();
-                console.log('started');
-                setTimeout(() => {
-                    if (!this.modalOpen) {
-                        qrScanner.stop();
-                        qrScanner.destroy();
-                    }
-                });
+                if (!this.modalOpen) {
+                    this.qrScanner.stop();
+                    this.qrScanner.destroy();
+                    this.qrScanner = null;
+                }
             }
             else {
                 console.warn('no camera found');
             }
+            this.loadingCam = false;
         });
     }
     handleQrCode(pairInfo) {
@@ -15321,9 +15325,10 @@ class QrScannerComponent {
     }
     closeModal() {
         // restore body scrollbar
-        if (this.qrScanner) {
+        if (this.qrScanner && !this.loadingCam) {
             this.qrScanner.stop();
             this.qrScanner.destroy();
+            this.qrScanner = null;
         }
         document.body.style.marginRight = '';
         document.body.style.overflow = '';
@@ -18176,7 +18181,6 @@ class UriHandlerComponent {
         if (active && document.hasFocus()) {
             active = false;
         }
-        console.log('favicon active', active);
         const src = active ? 'favicon-attention.ico' : 'favicon.ico';
         document.getElementById('favicon').setAttribute('href', src);
     }
@@ -18305,8 +18309,6 @@ class UriHandlerComponent {
             message.payload = message.payload.toLowerCase();
             const hexString = message.payload;
             console.log('hex', hexString);
-            console.log(message.signingType !== 'raw');
-            console.log(message.signingType !== 'micheline');
             if ((message.signingType !== 'raw' && message.signingType !== 'micheline') || !this.inputValidationService.hexString(hexString)) {
                 console.warn('Invalid sign payload');
                 yield this.beaconService.rejectOnUnknown(message);
