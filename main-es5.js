@@ -27038,7 +27038,6 @@
                       console.log('started');
                       setTimeout(function () {
                         if (!_this75.modalOpen) {
-                          console.log('destroy');
                           qrScanner.stop();
                           qrScanner.destroy();
                         }

@@ -15287,7 +15287,6 @@ class QrScannerComponent {
                 console.log('started');
                 setTimeout(() => {
                     if (!this.modalOpen) {
-                        console.log('destroy');
                         qrScanner.stop();
                         qrScanner.destroy();
                     }
