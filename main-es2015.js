@@ -5845,7 +5845,8 @@ const TRUSTED_TOKEN_CONTRACTS = [
     'KT1R3TqdxsHPYxNQBdY7jmXAeU17WpucMXDh',
     'KT1RUSCZ7pJ3WNTuXFD44UpStmNRjA459guZ',
     'KT1PrNd3sy1pLAqGtft47dzG4v8KizqPJntT',
-    'KT1WgeR4SaaTiTrwzrR1aD7h9YfeUTWcvC9j'
+    'KT1WgeR4SaaTiTrwzrR1aD7h9YfeUTWcvC9j',
+    'KT1D1S7KywvhzrTWHBo9MWUn5x3R9vxBmbio'
 ];
 
 
