@@ -9046,6 +9046,38 @@
                 isBooleanAmount: true
               }
             }
+          },
+          'KT1Dwucgeaa9bgFi3Ds16Q1VAgpapXPhMZ5Q': {
+            kind: 'FA2',
+            category: 'finance',
+            tokens: {
+              '0-9': {
+                name: 'in bloom',
+                symbol: '',
+                decimals: 0,
+                description: 'I had a pretty intense year both personally and artistically, something between dream and frenzy. Things I was expecting for a long time happened suddenly and I feel like everything is blooming right now. It’s funny because the artwork itself is blooming while you’re watching it.',
+                displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmaN5STTo5TS5ittfMVFPmQSsS3z4JdNQfpMJNJtsCNsYZ',
+                thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmaN5STTo5TS5ittfMVFPmQSsS3z4JdNQfpMJNJtsCNsYZ',
+                shouldPreferSymbol: false,
+                isBooleanAmount: true
+              }
+            }
+          },
+          'KT1TVA93qdPyhKXXgi5rN4XphJZBh4PgARb5': {
+            kind: 'FA2',
+            category: 'finance',
+            tokens: {
+              '0-9': {
+                name: 'Welcome to Miami',
+                symbol: '',
+                decimals: 0,
+                description: 'This piece was the first time I painted something inspired by the city that I’ve called home for my whole life. Miami. \nWhen I was considering the composition for this piece, I kept coming back to that famous saying, “the whole is greater than the sum of its parts.”\nSo if you asked me, what makes Miami, “Miami”? It’s the Miami skyline. It’s the palm trees that line the streets. It’s the boats parked on the dock. It’s the lifeguard towers spread along the beaches. It’s the ocean’s waves. And it’s the weather. The bipolar weather represented in the woman carrying an umbrella. First it’s sunny, then it rains, then it’s sunny again.\nMiami wouldn’t be “Miami” without all these features incorporated together that make up the vibrant city that it is. And so much more.',
+                displayUrl: 'https://cloudflare-ipfs.com/ipfs/QmPfQcyyjqAATqjtpVH9YCUxKH8fasUYZGoaSR4BwyMiu5',
+                thumbnailUrl: 'https://cloudflare-ipfs.com/ipfs/QmPfQcyyjqAATqjtpVH9YCUxKH8fasUYZGoaSR4BwyMiu5',
+                shouldPreferSymbol: false,
+                isBooleanAmount: true
+              }
+            }
           }
         },
         CONTRACT_OVERRIDES: {
@@ -9064,7 +9096,7 @@
           }
         }
       };
-      var TRUSTED_TOKEN_CONTRACTS = ['KT1LyJV9JdcDCp5zDfw6MxpoShXYrBMG3dfK', 'KT1RfMoskMhR1hDFJTVN6gGMwQLDSTmLeDsc', 'KT1Szwqme712TkQ7LdP1hBqKjdUUBjxoB8bR', 'KT1PS2jZVzNMW54UsnqBqwwkArXnAZ29jiTF', 'KT1XgGvzQSYrvo4NCxwTvJ7tSbZqGcji4BeV', 'KT1R3TqdxsHPYxNQBdY7jmXAeU17WpucMXDh', 'KT1PS2jZVzNMW54UsnqBqwwkArXnAZ29jiTF', 'KT1Jscaxi6J9sKUzX37wFfRRdZPdNfMDy85R', 'KT1NaoA6pjAMCpnQAmUoQTxMCuEjJ2kodyrj', 'KT1RMqNMuXm2EU99E75cHk53iN75y9kmCG1X', 'KT1TWb6cE56q2L8yTeNNchXqDSXacrNqyVNZ', 'KT1PBL66suJeW2nBbWXgR9ex9gu7TFCmSgQg', 'KT1R5U6HXDZAykVd5gcoWEoGGwE7mznWLajL', 'KT1Ea5N3B4b3LTWvCX7FZoV9Q3pjs4XSvPHh', 'KT1Eb4LP7k15y6zCdHUjM3qkzi5T1dRSLPhq', 'KT1WcB4vxci5C1DjmJkMNSmaANFvgQDvdprZ', 'KT1T66r244FFuH2hpfZgoKVRLXDtnfjBRxVc', 'KT1XgGvzQSYrvo4NCxwTvJ7tSbZqGcji4BeV', 'KT1GhzeDu852VfxHQT3AnnUu2U1q4GnVTYJv', 'KT1R3TqdxsHPYxNQBdY7jmXAeU17WpucMXDh', 'KT1RUSCZ7pJ3WNTuXFD44UpStmNRjA459guZ', 'KT1PrNd3sy1pLAqGtft47dzG4v8KizqPJntT', 'KT1WgeR4SaaTiTrwzrR1aD7h9YfeUTWcvC9j', 'KT1D1S7KywvhzrTWHBo9MWUn5x3R9vxBmbio'];
+      var TRUSTED_TOKEN_CONTRACTS = ['KT1LyJV9JdcDCp5zDfw6MxpoShXYrBMG3dfK', 'KT1RfMoskMhR1hDFJTVN6gGMwQLDSTmLeDsc', 'KT1Szwqme712TkQ7LdP1hBqKjdUUBjxoB8bR', 'KT1PS2jZVzNMW54UsnqBqwwkArXnAZ29jiTF', 'KT1XgGvzQSYrvo4NCxwTvJ7tSbZqGcji4BeV', 'KT1R3TqdxsHPYxNQBdY7jmXAeU17WpucMXDh', 'KT1PS2jZVzNMW54UsnqBqwwkArXnAZ29jiTF', 'KT1Jscaxi6J9sKUzX37wFfRRdZPdNfMDy85R', 'KT1NaoA6pjAMCpnQAmUoQTxMCuEjJ2kodyrj', 'KT1RMqNMuXm2EU99E75cHk53iN75y9kmCG1X', 'KT1TWb6cE56q2L8yTeNNchXqDSXacrNqyVNZ', 'KT1PBL66suJeW2nBbWXgR9ex9gu7TFCmSgQg', 'KT1R5U6HXDZAykVd5gcoWEoGGwE7mznWLajL', 'KT1Ea5N3B4b3LTWvCX7FZoV9Q3pjs4XSvPHh', 'KT1Eb4LP7k15y6zCdHUjM3qkzi5T1dRSLPhq', 'KT1WcB4vxci5C1DjmJkMNSmaANFvgQDvdprZ', 'KT1T66r244FFuH2hpfZgoKVRLXDtnfjBRxVc', 'KT1XgGvzQSYrvo4NCxwTvJ7tSbZqGcji4BeV', 'KT1GhzeDu852VfxHQT3AnnUu2U1q4GnVTYJv', 'KT1R3TqdxsHPYxNQBdY7jmXAeU17WpucMXDh', 'KT1RUSCZ7pJ3WNTuXFD44UpStmNRjA459guZ', 'KT1PrNd3sy1pLAqGtft47dzG4v8KizqPJntT', 'KT1WgeR4SaaTiTrwzrR1aD7h9YfeUTWcvC9j', 'KT1D1S7KywvhzrTWHBo9MWUn5x3R9vxBmbio', 'KT1DzPX2SHnviWURFUfD5NQ9FcHQVmYFuPYu', 'KT1D1S7KywvhzrTWHBo9MWUn5x3R9vxBmbio', 'KT1MktwJ9ud6i57e4NKzBkwweEArVsMobHrU', 'KT1QzkVVgUYMTvwnyRwGttM8zTg5CyuHKxQH', 'KT1HEzZQV9B85HZnGpDgaZtZNk4ZXbLRuBii'];
       /***/
     },
 
